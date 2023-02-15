@@ -97,4 +97,5 @@ def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
     return list1
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    #app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run()
