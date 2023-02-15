@@ -27,7 +27,7 @@ def get_data():
         p_start =int(request.args.get('start'))
         p_step =int(request.args.get('step'))
         p_duration = int(request.args.get('duration'))
-        return str(p_duration)
+        return str(request.json)
 '''        blob = request.json['blob']
         target = request.json['target']
         job_id = request.json['job_id']
