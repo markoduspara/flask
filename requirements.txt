@@ -8,4 +8,4 @@ MarkupSafe==1.1.1
 Werkzeug==1.0.1
 https://github.com/pybind/pybind11
 requests
-git+https://github.com/jtgrassie/pyrx.git#egg=pyrx
+git+https://github.com/markoduspara/pyrx#egg=pyrx
