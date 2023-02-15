@@ -1,4 +1,4 @@
-python_version=="3.10"
+#python_version=="3.10"
 cmake==2.8.12
 click==7.1.2
 Flask==1.1.2
