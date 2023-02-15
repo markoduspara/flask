@@ -27,7 +27,8 @@ def get_data():
         p_start =int(request.args.get('start'))
         p_step =int(request.args.get('step'))
         p_duration = int(request.args.get('duration'))
-        blob = request.json['blob']
+        return(p_duration)
+'''        blob = request.json['blob']
         target = request.json['target']
         job_id = request.json['job_id']
         height = request.json['height']
@@ -95,7 +96,7 @@ def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
             list1.append(dict1)
             break
     return list1
-
+'''
 if __name__ == '__main__':
     #app.run(debug=True, port=os.getenv("PORT", default=5000))
     app.run()
