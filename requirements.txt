@@ -7,4 +7,6 @@ Jinja2==2.11.3
 MarkupSafe==1.1.1
 Werkzeug==1.0.1
 requests
+git+https://github.com/tevador/RandomX
+git+https://github.com/pybind/pybind11
 git+https://github.com/jtgrassie/pyrx.git
