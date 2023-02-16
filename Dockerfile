@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   my-service:
     image: my-image
