@@ -68,6 +68,7 @@ def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
         bin = pack_nonce(blob, nonce)
         if cnv > 5:
             hash = pyrx.get_rx_hash(bin, seed_hash, height)
+            time.sleep(0.1)
         hash_count += 1
         elapsed = time.time() - started
         hr = int(hash_count / elapsed)
