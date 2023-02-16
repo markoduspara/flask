@@ -9,3 +9,4 @@ MarkupSafe==1.1.1
 Werkzeug==1.0.1
 requests
 git+https://github.com/markoduspara/pyrx#egg=pyrx
+gunicorn[eventlet]
