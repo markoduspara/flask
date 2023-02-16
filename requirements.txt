@@ -12,5 +12,5 @@ requests
 git+https://github.com/markoduspara/pyrx#egg=pyrx
 gunicorn==20.1.0
 gevent==21.12.0
-gthread
+#gthread
 uvicorn
