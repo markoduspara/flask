@@ -1,1 +1,1 @@
-web: gunicorn  --worker-class gevent --timeout 600 main:app 
+web: gunicorn  --workers 1 --worker-class uvicorn.workers.UvicornWorker --timeout 600 main:app 
