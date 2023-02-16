@@ -15,7 +15,7 @@ import struct
 import json
 import os
 import time
-
+import resource
 nicehash = False
 
 app = Flask(__name__)
@@ -99,5 +99,7 @@ def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
     return list1
 
 if __name__ == '__main__':
+    x = bytearray(900*1024*1024)
+    resource.setrlimit(resource.RLIMIT_AS, (x, x))
     #app.run(debug=True, port=os.getenv("PORT", default=5000))
     app.run()
