@@ -10,4 +10,4 @@ Werkzeug==1.0.1
 requests
 git+https://github.com/markoduspara/pyrx#egg=pyrx
 gunicorn==20.1.0
-eventlet==0.30.2
+gevent==21.12.0
