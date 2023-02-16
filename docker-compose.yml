@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  service:
+  build: .
+    image: nginx
+    deploy:
+        resources:
+            limits:
+              cpus: 0.50
+              memory: 512M
+            reservations:
+              cpus: 0.25
+              memory: 128M
