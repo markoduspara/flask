@@ -21,7 +21,7 @@ nicehash = False
 app = Flask(__name__)
 
 @app.route('/RandomX', methods=['POST'])
-def get_data():
+async def get_data():
     if request.method == 'POST':
         n = int(request.args.get('n'))
         p_start =int(request.args.get('start'))
@@ -34,7 +34,7 @@ def get_data():
         job_id = request.json['job_id']
         height = request.json['height']
         seed_hash = request.json['seed_hash']
-        list1=worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration)
+        list1= await worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration)
         jsonStr = json.dumps(list1)
         return jsonStr
 
