@@ -29,14 +29,18 @@ def get_data():
         p_duration = int(request.args.get('duration'))
         
         blob = request.json['blob']
-        return str(blob)
-'''        target = request.json['target']
+
+        target = request.json['target']
         job_id = request.json['job_id']
         height = request.json['height']
         seed_hash = request.json['seed_hash']
-        list1= worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration)
-        jsonStr = json.dumps(list1)
-        return jsonStr
+        bin = pack_nonce(blob, nonce)
+        hash = pyrx.get_rx_hash(bin, seed_hash, height)
+        return str(blob)
+#        list1= worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration)
+        
+#        jsonStr = json.dumps(list1)
+#        return jsonStr
 
 def pack_nonce(blob, nonce):
     b = binascii.unhexlify(blob)
@@ -48,7 +52,7 @@ def pack_nonce(blob, nonce):
         bin += struct.pack('I', nonce)
         bin += struct.pack('{}B'.format(len(b)-43), *bytearray(b[43:]))
     return bin
-
+'''
 def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
     started = time.time()
     hash_count = 0
