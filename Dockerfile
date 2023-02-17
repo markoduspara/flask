@@ -133,7 +133,7 @@ ENV FLASK_RUN_HOST=0.0.0.0
 #RUN pip install --upgrade pip install
 COPY requirements.txt requirements.txt
 #RUN apk add --no-cache git
-#RUN pip install -r requirements.txt
-#EXPOSE 5000
-#COPY . .
-#CMD ["flask", "run"]
+RUN pip install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
