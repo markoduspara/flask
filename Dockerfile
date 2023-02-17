@@ -1,12 +1,10 @@
-# syntax=docker/dockerfile:1
-
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM buildpack-deps:bullseye
+FROM alpine:3.17
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -17,18 +15,46 @@ ENV LANG C.UTF-8
 
 # runtime dependencies
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		libbluetooth-dev \
-		tk-dev \
-		uuid-dev \
-	; \
-	rm -rf /var/lib/apt/lists/*
+	apk add --no-cache \
+		ca-certificates \
+		tzdata \
+	;
 
 ENV GPG_KEY A035C8C19219BA821ECEA86B64E628F8D684696D
 ENV PYTHON_VERSION 3.10.10
 
 RUN set -eux; \
+	\
+	apk add --no-cache --virtual .build-deps \
+		gnupg \
+		tar \
+		xz \
+		\
+		bluez-dev \
+		bzip2-dev \
+		dpkg-dev dpkg \
+		expat-dev \
+		findutils \
+		gcc \
+		gdbm-dev \
+		libc-dev \
+		libffi-dev \
+		libnsl-dev \
+		libtirpc-dev \
+		linux-headers \
+		make \
+		ncurses-dev \
+		openssl-dev \
+		pax-utils \
+		readline-dev \
+		sqlite-dev \
+		tcl-dev \
+		tk \
+		tk-dev \
+		util-linux-dev \
+		xz-dev \
+		zlib-dev \
+	; \
 	\
 	wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz"; \
 	wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc"; \
@@ -54,6 +80,10 @@ RUN set -eux; \
 		--without-ensurepip \
 	; \
 	nproc="$(nproc)"; \
+# set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
+# https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0
+	EXTRA_CFLAGS="-DTHREAD_STACK_SIZE=0x100000"; \
+	LDFLAGS="-Wl,--strip-all"; \
 	make -j "$nproc" \
 		"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}" \
 		"LDFLAGS=${LDFLAGS:-}" \
@@ -70,12 +100,6 @@ RUN set -eux; \
 	; \
 	make install; \
 	\
-# enable GDB to load debugging data: https://github.com/docker-library/python/pull/701
-	bin="$(readlink -ve /usr/local/bin/python3)"; \
-	dir="$(dirname "$bin")"; \
-	mkdir -p "/usr/share/gdb/auto-load/$dir"; \
-	cp -vL Tools/gdb/libpython.py "/usr/share/gdb/auto-load/$bin-gdb.py"; \
-	\
 	cd /; \
 	rm -rf /usr/src/python; \
 	\
@@ -86,7 +110,13 @@ RUN set -eux; \
 		\) -exec rm -rf '{}' + \
 	; \
 	\
-	ldconfig; \
+	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec scanelf --needed --nobanner --format '%n#p' '{}' ';' \
+		| tr ',' '\n' \
+		| sort -u \
+		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+		| xargs -rt apk add --no-network --virtual .python-rundeps \
+	; \
+	apk del --no-network .build-deps; \
 	\
 	python3 --version
 
@@ -125,7 +155,7 @@ RUN set -eux; \
 	\
 	pip --version
 
-#FROM buildpack-deps:bullseye
+
 WORKDIR .
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
@@ -136,4 +166,4 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 5000
 COPY . .
-CMD ["flask", "run"]
+CMD ["gunicorn", "run"]
