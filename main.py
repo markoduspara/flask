@@ -34,6 +34,7 @@ def get_data():
         job_id = request.json['job_id']
         height = request.json['height']
         seed_hash = request.json['seed_hash']
+        nonce = p_start
         bin = pack_nonce(blob, nonce)
         hash = pyrx.get_rx_hash(bin, seed_hash, height)
         return str(blob)
