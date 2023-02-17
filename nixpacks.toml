@@ -1,4 +1,5 @@
 [variables]
 NIXPACKS_PYTHON_VERSION='3.10.5'
+NIXPACKS_BUILD_CMD=build
 [phases.build]
-cmds = ["build ./app --name my-app"]
+cmds = ["..."]
