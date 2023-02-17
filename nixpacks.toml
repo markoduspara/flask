@@ -3,4 +3,4 @@ NIXPACKS_PYTHON_VERSION='3.10.5'
 #NIXPACKS_BUILD_CMD='build --name myname'
 buildImage = 'ghcr.io/railwayapp/nixpacks:latest'
 [phases.build]
-cmds = ["docker images -a"]
+cmds = ["images -a"]
