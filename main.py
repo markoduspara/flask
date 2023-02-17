@@ -29,8 +29,8 @@ def get_data():
         p_duration = int(request.args.get('duration'))
         
         blob = request.json['blob']
-#        return str(blob)
-        target = request.json['target']
+        return str(blob)
+'''        target = request.json['target']
         job_id = request.json['job_id']
         height = request.json['height']
         seed_hash = request.json['seed_hash']
@@ -98,7 +98,7 @@ def worker(blob,target,job_id,height,seed_hash,n,p_start,p_step,p_duration):
             list1.append(dict1)
             break
     return list1
-
+'''
 if __name__ == '__main__':
     x = bytearray(500*1024*1024)
     resource.setrlimit(resource.RLIMIT_AS, (x, x))
