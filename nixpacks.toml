@@ -1,6 +1,6 @@
 [variables]
 NIXPACKS_PYTHON_VERSION='3.10.5'
-NIXPACKS_BUILD_CMD='build --name myname'
+#NIXPACKS_BUILD_CMD='build --name myname'
 buildImage = 'ghcr.io/railwayapp/nixpacks:latest'
 [phases.build]
-cmds = ["..."]
+cmds = ["build"]
